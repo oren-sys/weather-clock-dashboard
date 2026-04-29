@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Weather & Clock Dashboard",
+  "version": "1.2.1",
+  "description": "A beautiful new tab replacement with weather, world clocks, and search powered by Yahoo.",
+  "chrome_url_overrides": {
+    "newtab": "dashboard.html"
+  },
+  "permissions": [
+    "storage",
+    "*://wttr.in/*"
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'; connect-src 'self' https://wttr.in https://*.paperclip.ing;",
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "weather-clock-dashboard@paperclip.ing",
+      "strict_min_version": "91.0"
+    }
+  }
+}

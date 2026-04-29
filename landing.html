@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather & Clock Dashboard — Firefox New Tab Extension</title>
+  <meta name="description" content="Replace your Firefox new tab with a beautiful dashboard featuring live weather, world clocks, and search. Free. Privacy-friendly. Fast.">
+  <meta name="keywords" content="firefox extension, new tab, weather, world clock, dashboard, firefox addon, new tab replacement">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Weather & Clock Dashboard — Firefox New Tab Extension">
+  <meta property="og:description" content="Replace your Firefox new tab with live weather, world clocks, and search. Free &amp; privacy-friendly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://addons.mozilla.org/en-US/firefox/addon/weather-clock-dashboard/">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Weather & Clock Dashboard for Firefox">
+  <meta name="twitter:description" content="Replace your Firefox new tab with live weather, world clocks, and search.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #e25c22;
+      color: white;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cta:hover { background: #c94d16; transform: translateY(-1px); }
+    .cta-icon { font-size: 1.4rem; }
+    .features {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #1e2535;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .feature-icon { font-size: 2rem; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: #f1f5f9; }
+    .feature-card p { color: #94a3b8; font-size: 0.95rem; }
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #f1f5f9;
+    }
+    .section-sub {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 40px;
+    }
+    .features-header { text-align: center; padding-top: 60px; }
+    .why {
+      background: #1a1f2e;
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .why-grid {
+      max-width: 700px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .why-item {
+      background: #0f1117;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+    }
+    .why-item strong { display: block; color: #60a5fa; margin-bottom: 4px; }
+    .install-section {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      text-align: center;
+    }
+    .install-steps {
+      text-align: left;
+      background: #1e2535;
+      border-radius: 12px;
+      padding: 28px;
+      margin: 32px 0;
+      counter-reset: steps;
+    }
+    .step {
+      counter-increment: steps;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: #3b82f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .step-text { color: #cbd5e1; font-size: 0.95rem; padding-top: 4px; }
+    footer {
+      background: #0a0d14;
+      text-align: center;
+      padding: 24px;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+    footer a { color: #60a5fa; text-decoration: none; }
+    .badge {
+      display: inline-block;
+      background: #1e3a5f;
+      color: #60a5fa;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="badge">Free Firefox Extension</div>
+    <h1>Weather &amp; Clock Dashboard</h1>
+    <p>Replace your boring new tab with a beautiful, live dashboard. Weather forecasts, world clocks, and search — every time you open a new tab.</p>
+    <a class="cta" href="https://addons.mozilla.org/en-US/firefox/addon/weather-clock-dashboard/" target="_blank" rel="noopener">
+      <span class="cta-icon">🦊</span>
+      Add to Firefox — It's Free
+    </a>
+  </section>
+
+  <div class="features-header">
+    <h2 class="section-title">Everything you need, every new tab</h2>
+    <p class="section-sub">Six features. Zero clutter. Instant load.</p>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">🌤️</div>
+      <h3>Live Weather Forecast</h3>
+      <p>Current conditions and 3-day forecast for any city worldwide. Powered by wttr.in — no API key, no account required.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🕐</div>
+      <h3>World Clocks</h3>
+      <p>Track multiple time zones side by side. Add, remove, and customize your clock list. Perfect for remote teams and travelers.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>Search Bar</h3>
+      <p>Clean, prominent search bar that uses your default Firefox search engine. Just start typing — no clicks needed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌙</div>
+      <h3>Dark &amp; Light Mode</h3>
+      <p>Toggle between themes with one click. Your preference is remembered across all your new tabs.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Load</h3>
+      <p>Pure HTML/CSS/JS — no frameworks, no build step. Opens instantly every single time you hit Ctrl+T.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Privacy-Friendly</h3>
+      <p>No personal data collected. No tracking cookies. Preferences stored locally on your device. Open source (MIT).</p>
+    </div>
+  </div>
+
+  <section class="why">
+    <h2 class="section-title">Why Weather &amp; Clock Dashboard?</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <strong>Free Forever</strong>
+        No subscription, no premium tier
+      </div>
+      <div class="why-item">
+        <strong>Open Source</strong>
+        MIT licensed — inspect the code
+      </div>
+      <div class="why-item">
+        <strong>No Account</strong>
+        Install and use immediately
+      </div>
+      <div class="why-item">
+        <strong>Firefox-Native</strong>
+        Uses your default search engine
+      </div>
+    </div>
+  </section>
+
+  <section class="install-section">
+    <h2 class="section-title">Install in 30 seconds</h2>
+    <div class="install-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Click the button below to visit the Firefox Add-ons page</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Click <strong>Add to Firefox</strong> and confirm the permission</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Open a new tab — your dashboard is live immediately</div>
+      </div>
+    </div>
+    <a class="cta" href="https://addons.mozilla.org/en-US/firefox/addon/weather-clock-dashboard/" target="_blank" rel="noopener">
+      <span class="cta-icon">🦊</span>
+      Install on Firefox
+    </a>
+  </section>
+
+  <footer>
+    <p>
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/weather-clock-dashboard/">Firefox Add-ons</a>
+      &nbsp;·&nbsp;
+      MIT License
+      &nbsp;·&nbsp;
+      Built by <a href="https://skil.media">Skil</a>
+    </p>
+  </footer>
+
+</body>
+</html>
